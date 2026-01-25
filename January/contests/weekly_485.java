@@ -1,4 +1,5 @@
 import java.util.Map;
+import java.util.HashMap;
 import java.util.TreeSet;
 
 public class weekly_485 {
@@ -23,24 +24,24 @@ class Solution {
      public int vowelConsonantScore(String s) {
     int co =0,v=0;
     for(char c:s.toCharArray()){
-                if(c==' '||Character.isDigit(c)){
-                    continue;
-                }
-                if(isVowel(c)){
-                   v++;
-                }else{
-                    co++;
-                }
-            }
-            if(co==0)return 0;
-            return (int)Math.floor(v/co);
-        }
-        public boolean isVowel(char c){
-            if(c=='a'||c=='e'||c=='i'||c=='o'||c=='u'){
-                return true;
-            }
-            return false;
-        }
+      if(c==' '||Character.isDigit(c)){
+          continue;
+          }
+           if(isVowel(c)){
+             v++;
+            }else{
+                co++;
+               }
+             }
+             if(co==0)return 0;
+             return (int)Math.floor(v/co);
+            }
+             public boolean isVowel(char c){
+                if(c=='a'||c=='e'||c=='i'||c=='o'||c=='u'){
+                   return true;
+                  }
+                 return false;
+               }
  }
  /* q2:
      Maximum Capacity Within Budget
@@ -57,24 +58,23 @@ Return the maximum achievable total capacity of the selected machines.
  ©leetcode
 Solution:*/
 class Solution2 {
-    public int maxCapacity(int[] costs, int[] capacity, int budget) {
-        int n = costs.length;
-        int maxCap = 0;
-        for(int i=0;i<n;i++){
-            if(costs[i] < budget) 
-            maxCap = Math.max(capacity[i],maxCap);
-        }
-        for(int i=0; i<n; i++){
-            for(int j=i+1; j<n; j++){
-                long totalCost = (long)costs[i] + costs[j];
-                if(totalCost < budget){
-                    int totalCap = capacity[i] + capacity[j];
-                    maxCap = Math.max(maxCap,totalCap);
-                }
-            }
-        }
-        return maxCap;
-    }
+    public int maxCapacity(int[] costs, int[] capacity, int budget) {
+      int n = costs.length;
+       int maxCap = 0;
+       for(int i=0;i<n;i++){
+         if(costs[i] < budget) 
+             maxCap = Math.max(capacity[i],maxCap);
+            }
+            for(int i=0; i<n; i++){
+                for(int j=i+1; j<n; j++){
+                  long totalCost = (long)costs[i] + costs[j];
+                  if(totalCost < budget){
+                     int totalCap = capacity[i] + capacity[j];
+                      maxCap = Math.max(maxCap,totalCap);
+                      }
+                      }
+                     }
+                     return maxCap;}
 }
 /*
 q3:
@@ -96,51 +96,48 @@ void removeBid(int userId, int itemId): Removes the bid of userId for itemId. It
 int getHighestBidder(int itemId): Returns the userId of the highest bidder for itemId. If multiple users have the same highest bidAmount, return the user with the highest userId. If no bids exist for the item, return -1.©leetcode
 Solution:*/
 class AuctionSystem {
-  Map<Integer, Map<Integer, Integer>> userBids;
-    Map<Integer, TreeSet<Bid>> itemTopBids;
-   
-    class Bid implements Comparable<Bid> {
-        int userId, amount;
-        Bid(int u, int a) { this.userId = u; this.amount = a; }
+Map<Integer, Map<Integer, Integer>> userBids;
+ Map<Integer, TreeSet<Bid>> itemTopBids;
 
-        @Override
-        public int compareTo(Bid other) {
-            if (this.amount != other.amount) {
-                return Integer.compare(this.amount, other.amount);
-            }
-            return Integer.compare(this.userId, other.userId);
-        }
-    }
-    public AuctionSystem() {
-        this.userBids = new HashMap<>();
-        this.itemTopBids = new HashMap<>();
-    }
-    
- public void addBid(int userId, int itemId, int bidAmount) {
-        if (userBids.containsKey(itemId) && userBids.get(itemId).containsKey(userId)) {
-            int oldAmount = userBids.get(itemId).get(userId);
-            itemTopBids.get(itemId).remove(new Bid(userId, oldAmount));
-        }
-        userBids.computeIfAbsent(itemId, k -> new HashMap<>()).put(userId, bidAmount);
-        itemTopBids.computeIfAbsent(itemId, k -> new TreeSet<>()).add(new Bid(userId, bidAmount));
-    }
-    
-    public void updateBid(int userId, int itemId, int newAmount) {
-        addBid(userId, itemId, newAmount);
-    }
-    
-    public void removeBid(int userId, int itemId) {
-        int oldAmount = userBids.get(itemId).remove(userId);
-        itemTopBids.get(itemId).remove(new Bid(userId, oldAmount));
-    }
-    
-    public int getHighestBidder(int itemId) {
-        if (!itemTopBids.containsKey(itemId) || itemTopBids.get(itemId).isEmpty()) {
-            return -1;
-        }
-        return itemTopBids.get(itemId).last().userId;
-    }
+class Bid implements Comparable<Bid> {
+int userId, amount;
+ Bid(int u, int a) { this.userId = u; this.amount = a; }
+@Override
+public int compareTo(Bid other) {
+if (this.amount != other.amount) {
+return Integer.compare(this.amount, other.amount);
 }
+return Integer.compare(this.userId, other.userId);
+ }
+}
+public AuctionSystem() {
+this.userBids = new HashMap<>();
+ this.itemTopBids = new HashMap<>();
+ }
+
+public void addBid(int userId, int itemId, int bidAmount) {
+if (userBids.containsKey(itemId) && userBids.get(itemId).containsKey(userId)) {
+int oldAmount = userBids.get(itemId).get(userId);
+itemTopBids.get(itemId).remove(new Bid(userId, oldAmount));
+ }
+ userBids.computeIfAbsent(itemId, k -> new HashMap<>()).put(userId, bidAmount);
+itemTopBids.computeIfAbsent(itemId, k -> new TreeSet<>()).add(new Bid(userId, bidAmount));
+}
+public void updateBid(int userId, int itemId, int newAmount) {
+ addBid(userId, itemId, newAmount);
+}
+public void removeBid(int userId, int itemId) {
+int oldAmount = userBids.get(itemId).remove(userId);
+itemTopBids.get(itemId).remove(new Bid(userId, oldAmount));
+}
+public int getHighestBidder(int itemId) {
+if (!itemTopBids.containsKey(itemId) || itemTopBids.get(itemId).isEmpty()) {
+return -1;
+}
+return itemTopBids.get(itemId).last().userId;
+
+}
+}}
 
 /**
  * Your AuctionSystem object will be instantiated and called as such:
