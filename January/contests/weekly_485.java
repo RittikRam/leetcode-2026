@@ -62,7 +62,7 @@ class Solution2 {
       int n = costs.length;
        int maxCap = 0;
        for(int i=0;i<n;i++){
-         if(costs[i] < budget) 
+         if(costs[i] < budget)
              maxCap = Math.max(capacity[i],maxCap);
             }
             for(int i=0; i<n; i++){
@@ -75,7 +75,7 @@ class Solution2 {
                       }
                      }
                      return maxCap;}
-}
+                    }
 /*
 q3:
 . Design Auction System
