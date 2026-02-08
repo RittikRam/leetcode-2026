@@ -1,3 +1,4 @@
+package contests;
 import java.util.*;
 
 public class weekly_488 {
